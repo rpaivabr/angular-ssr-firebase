@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -14,8 +16,12 @@ export class AppComponent implements OnInit {
     image: 'https://goo.gl/hfvwfq',
     url: 'https://www.heedsolutions.com.br'
   };
+  teste$: Observable<any[]>;
 
-  constructor(private meta: Meta) {}
+  constructor(private meta: Meta,
+              private afs: AngularFirestore) {
+    this.teste$ = this.afs.collection('teste').valueChanges();
+  }
 
   ngOnInit() {
     this.meta.addTags([
@@ -28,5 +34,11 @@ export class AppComponent implements OnInit {
       { name: 'twitter:image', content: this.data.image },
       { name: 'twitter:card', content: 'summary_large_image' },
     ]);
+    this.teste$.subscribe(data => {
+      const bio = data[0].bio;
+      console.log(bio);
+      this.meta.updateTag({ property: 'og:description', content: bio });
+      this.meta.updateTag({ name: 'twitter:description', content: bio });
+    });
   }
 }
