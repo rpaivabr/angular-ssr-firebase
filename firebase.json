@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/heed-site",
+    "public": "dist/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
