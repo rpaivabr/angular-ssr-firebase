@@ -9,9 +9,9 @@ module.exports = {
     // This is our Express server for Dynamic universal
     server: './server.ts'
   },
-  externals: {
-    './dist/server/main': 'require("./server/main")'
-  },
+  externals: [
+    /^firebase/
+  ],
   target: 'node',
   resolve: { extensions: ['.ts', '.js'] },
   optimization: {
@@ -20,6 +20,8 @@ module.exports = {
   output: {
     // Puts the output at the root of the dist folder
     path: path.join(__dirname, 'dist'),
+    library: 'app',
+    libraryTarget: 'umd',
     filename: '[name].js'
   },
   module: {
